@@ -1,0 +1,6 @@
+{
+  "name": "Bharat Peyjal Jal Mitra",
+  "description": "भारत पेयजल जल मित्र एंड्रॉइड ऐप - वेतन, हाज़िरी, इंसेंटिव एवं कार्य रिपोर्ट ट्रैकर विथ डार्क/लाइट मोड और डायनामिक थीमिंग",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

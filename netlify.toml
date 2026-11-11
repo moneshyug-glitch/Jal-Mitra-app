@@ -1,0 +1,16 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Proxy for Google Apps Script to prevent cross-origin issues
+[[redirects]]
+  from = "/api/sheet"
+  to = "https://script.google.com/macros/s/AKfycbxTzRuoHBEUEM9GJSLFwxMwZzaroIYRANnIgJP7OCHWX_lkeP1cHv9SfK9sMF9vNz3X/exec"
+  status = 200
+  force = true
+
+# SPA single-page application fallback routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

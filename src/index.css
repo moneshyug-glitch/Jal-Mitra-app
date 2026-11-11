@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --primary: #003366;
+    --primary-rgb: 0, 51, 102;
+    --primary-hover: #002244;
+    --primary-light: #e6f0fa;
+    --accent: #3b82f6;
+    --accent-rgb: 59, 130, 246;
+    --accent-light: #eff6ff;
+  }
+
+  body {
+    font-family: 'Poppins', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* Dynamic theme classes */
+[data-theme="ocean"] {
+  --primary: #003366;
+  --primary-rgb: 0, 51, 102;
+  --primary-hover: #002244;
+  --primary-light: #e6f0fa;
+  --accent: #3b82f6;
+  --accent-rgb: 59, 130, 246;
+  --accent-light: #eff6ff;
+}
+
+[data-theme="emerald"] {
+  --primary: #065f46;
+  --primary-rgb: 6, 95, 70;
+  --primary-hover: #064e3b;
+  --primary-light: #ecfdf5;
+  --accent: #10b981;
+  --accent-rgb: 16, 185, 129;
+  --accent-light: #f0fdf4;
+}
+
+[data-theme="saffron"] {
+  --primary: #c2410c;
+  --primary-rgb: 194, 65, 12;
+  --primary-hover: #9a3412;
+  --primary-light: #fff7ed;
+  --accent: #f97316;
+  --accent-rgb: 249, 115, 22;
+  --accent-light: #fffaf0;
+}
+
+[data-theme="indigo"] {
+  --primary: #3730a3;
+  --primary-rgb: 55, 48, 163;
+  --primary-hover: #312e81;
+  --primary-light: #eef2ff;
+  --accent: #6366f1;
+  --accent-rgb: 99, 102, 241;
+  --accent-light: #f5f7ff;
+}
+
+[data-theme="ruby"] {
+  --primary: #9f1239;
+  --primary-rgb: 159, 18, 57;
+  --primary-hover: #881337;
+  --primary-light: #fff1f2;
+  --accent: #f43f5e;
+  --accent-rgb: 244, 63, 94;
+  --accent-light: #fff5f7;
+}
+
+/* Custom Utilities for Android tactile feel */
+.touch-press {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease;
+}
+.touch-press:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* Android ripple simulated border highlight */
+.android-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hide scrollbars for clean mobile app feel while retaining scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

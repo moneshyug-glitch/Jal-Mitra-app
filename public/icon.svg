@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002244" />
+      <stop offset="50%" stop-color="#003366" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="dropGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="tricolorSaffron" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff9933" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="tricolorGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base for Android App Icon -->
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bgGrad)" />
+
+  <!-- Subtle Indian Tricolor Arcs on Edge -->
+  <path d="M 60 140 A 200 200 0 0 1 200 60" fill="none" stroke="url(#tricolorSaffron)" stroke-width="12" stroke-linecap="round" opacity="0.8" />
+  <path d="M 312 452 A 200 200 0 0 1 452 312" fill="none" stroke="url(#tricolorGreen)" stroke-width="12" stroke-linecap="round" opacity="0.8" />
+
+  <!-- Glowing Water Droplet -->
+  <g filter="url(#shadow)">
+    <path d="M 256 100 C 256 100 136 260 136 332 C 136 398.27 189.73 452 256 452 C 322.27 452 376 398.27 376 332 C 376 260 256 100 256 100 Z" fill="url(#dropGrad)" />
+  </g>
+
+  <!-- Droplet Gloss Highlight -->
+  <path d="M 216 230 C 200 270 200 320 236 360 C 230 350 220 310 230 270 C 235 250 245 235 245 235 Z" fill="#ffffff" opacity="0.4" />
+
+  <!-- Stylized Jal Mitra Hands / Wave Motif Inside Droplet -->
+  <path d="M 180 345 Q 220 375 256 345 T 332 345" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" opacity="0.95" />
+  <path d="M 200 375 Q 230 395 256 375 T 312 375" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.75" />
+
+  <!-- Center Jal Emblem Dot -->
+  <circle cx="256" cy="270" r="20" fill="#ffffff" opacity="0.95" />
+  <circle cx="256" cy="270" r="10" fill="#003366" />
+</svg>

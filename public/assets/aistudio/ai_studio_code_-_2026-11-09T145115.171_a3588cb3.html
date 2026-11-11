@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>भारत पेयजल - जल मित्र डैशबोर्ड</title>
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Poppins + Noto Sans Devanagari (हर मोबाइल में हिंदी साफ दिखने के लिए) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'Noto Sans Devanagari', 'sans-serif'] },
+          colors: {
+            brand: { blue: '#003366', aqua: '#3B82F6', saffron: '#FF9933', green: '#138808' }
+          },
+          animation: {
+            'spin-slow': 'spin 20s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Global Reset & Horizontal Scroll Fix */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100vw;
+      width: 100%;
+      background-color: #f8fafc;
+      font-family: 'Poppins', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* CHAKRA WHEEL CSS */
+    .chakra-wheel {
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 2px solid rgba(59, 130, 246, 0.2);
+      background: repeating-conic-gradient(from 0deg, rgba(59, 130, 246, 0.15) 0deg 2deg, transparent 2deg 15deg);
+      mask-image: radial-gradient(transparent 30%, black 32%);
+      -webkit-mask-image: radial-gradient(transparent 30%, black 32%);
+    }
+
+    /* Wave Divider */
+    .wave-divider { position: absolute; top: -1px; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); z-index: 1; }
+    .wave-divider svg { position: relative; display: block; width: calc(100% + 1.3px); height: 50px; }
+    .wave-divider .shape-fill { fill: #f8fafc; }
+
+    /* Glass Card Utility */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Uniform Jal Mitra Badge */
+    .badge-jalmitra {
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 700;
+      border: 1px solid #fde68a;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .card-shell {
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .kpi-box {
+      border-radius: 14px;
+      padding: 12px;
+      height: 100%;
+      min-height: 98px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid transparent;
+      word-break: break-word;
+    }
+    .kpi-green  { background: #f0fdf4; border-color: #bbf7d0; }
+    .kpi-red    { background: #fef2f2; border-color: #fecaca; }
+    .kpi-yellow { background: #fffbeb; border-color: #fde68a; }
+    .kpi-blue   { background: #eff6ff; border-color: #bfdbfe; }
+
+    .net-salary-card {
+      background: linear-gradient(135deg, #003366 0%, #1e40af 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 20px 14px;
+      text-align: center;
+      width: 100%;
+    }
+    .net-pill {
+      background: rgba(255,255,255,0.18);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .sub-toggle-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    .stat-pill {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px 10px;
+      height: 100%;
+      min-height: 58px;
+    }
+
+    .month-picker-select {
+      background-color: #ffffff;
+      border: 1.5px solid #3b82f6;
+      color: #1d4ed8;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 5px 8px;
+      font-size: 11.5px;
+      max-width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .cursor-pointer { cursor: pointer; }
+    
+    .custom-scroll {
+      max-height: 180px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- ================= 1. OPTIMIZED NAVBAR ================= -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm py-2">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 flex justify-between items-center gap-1 sm:gap-2">
+        
+        <!-- Logo -->
+        <a href="https://bharatpeyjal.in.net/" class="flex items-center flex-shrink-0 text-decoration-none" aria-label="Bharat Peyjal Home">
+            <img id="nav-logo" src="logo.png" alt="Bharat Peyjal Logo" class="h-9 sm:h-11 md:h-13 object-contain transition-all duration-300 max-w-[130px] sm:max-w-none">
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-4 lg:gap-7 font-semibold text-xs lg:text-[13px] tracking-wider uppercase text-gray-600 whitespace-nowrap">
+            <a href="https://bharatpeyjal.in.net/" class="hover:text-brand-aqua transition text-decoration-none text-gray-600 whitespace-nowrap">Home</a>
+            
+            <!-- Services Dropdown -->
+            <div class="relative group">
+                <a href="#services" class="hover:text-brand-aqua transition flex items-center gap-1 text-decoration-none text-gray-600 whitespace-nowrap">
+                  Services <i class="fa-solid fa-angle-down text-[10px] opacity-60"></i>
+                </a>
+                <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 hidden group-hover:block w-52 z-50">
+                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                        <a href="staff.html" class="block px-4 py-3 text-brand-aqua bg-blue-50/50 hover:bg-brand-aqua hover:text-white transition text-[11px] font-bold tracking-wider uppercase border-b border-gray-50 text-decoration-none">
+                            <i class="fa-solid fa-gauge-high mr-2"></i> Dashboard
+                        </a>
+                        <a href="water-intake-test.html" class="block px-4 py-3 text-gray-600 hover:bg-brand-aqua hover:text-white transition text-[11px] font-bold tracking-wider uppercase text-decoration-none">
+                            <i class="fa-solid fa-droplet mr-2"></i> Water Intake Test
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="https://bharatpeyjal.in.net/#about" class="hover:text-brand-aqua transition text-decoration-none text-gray-600 whitespace-nowrap">About Us</a>
+            <a href="https://bharatpeyjal.in.net/#pricing" class="hover:text-brand-aqua transition text-decoration-none text-gray-600 whitespace-nowrap">Plan</a>
+            <a href="https://bharatpeyjal.in.net/#contact" class="hover:text-brand-aqua transition text-decoration-none text-gray-600 whitespace-nowrap">Contact</a>
+        </div>
+
+        <!-- Right Side: CTA / Actions -->
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <!-- Normal Helpline Call (Visible BEFORE login) -->
+            <a href="tel:+917860393198" id="navCallBtn" class="inline-flex items-center gap-1.5 bg-brand-blue text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-semibold hover:bg-brand-aqua transition shadow-sm text-xs text-decoration-none whitespace-nowrap">
+                <i class="fa-solid fa-phone text-[11px]"></i> <span class="hidden xs:inline">7860393198</span>
+            </a>
+
+            <!-- Logged-in State Action (Jal Mitra Badge + Logout) -->
+            <div id="navActions" class="d-none items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+              <span class="badge-jalmitra d-none xs:d-inline-flex">
+                <i class="fa-solid fa-id-badge text-warning"></i> जल मित्र
+              </span>
+              <button class="btn btn-sm btn-danger rounded-pill px-2.5 py-1 fw-bold shadow-sm d-inline-flex align-items-center gap-1 text-xs" onclick="logout()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span class="hidden sm:inline">लॉगआउट</span>
+              </button>
+            </div>
+
+            <!-- Hamburger Button for Mobile -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-brand-blue focus:outline-none p-1 border-0 bg-transparent" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl top-full left-0 z-50">
+        <div class="flex flex-col p-4 space-y-2.5 font-medium text-center">
+            <a href="https://bharatpeyjal.in.net/" class="block py-2 hover:text-brand-aqua text-decoration-none text-gray-700">Home</a>
+            
+            <a href="staff.html" class="block py-2 text-sm text-brand-blue bg-blue-50 rounded-lg mx-4 font-bold text-decoration-none">
+                <i class="fa-solid fa-gauge-high mr-2 text-brand-aqua"></i> Dashboard (जल मित्र)
+            </a>
+
+            <a href="water-intake-test.html" class="block py-2 text-sm text-gray-700 hover:text-brand-aqua text-decoration-none">
+                <i class="fa-solid fa-droplet mr-2 text-brand-aqua"></i> Water Intake Test
+            </a>
+
+            <a href="https://bharatpeyjal.in.net/#about" class="block py-2 hover:text-brand-aqua text-decoration-none text-gray-700">About Us</a>
+            <a href="https://bharatpeyjal.in.net/#pricing" class="block py-2 hover:text-brand-aqua text-decoration-none text-gray-700">Plan</a>
+            <a href="https://bharatpeyjal.in.net/#contact" class="block py-2 hover:text-brand-aqua text-decoration-none text-gray-700">Contact</a>
+            
+            <!-- Mobile Logged-in Button -->
+            <div id="mobileNavActions" class="d-none pt-2">
+              <button class="w-full bg-red-600 text-white py-2 rounded-xl font-bold hover:bg-red-700 transition" onclick="logout()">
+                <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> लॉगआउट करें
+              </button>
+            </div>
+
+            <a href="tel:+917860393198" class="flex items-center justify-center gap-2 bg-brand-blue text-white py-2 rounded-xl shadow hover:bg-brand-aqua transition text-decoration-none mt-2 text-sm">
+                <i class="fa-solid fa-phone"></i> <span>Helpline: 7860393198</span>
+            </a>
+        </div>
+    </div>
+  </nav>
+
+  <!-- ================= 2. MAIN DASHBOARD CONTENT ================= -->
+  <main class="w-full px-3 pt-24 sm:pt-28 pb-6 flex-grow flex justify-center">
+    <div class="w-full" style="max-width: 460px;">
+
+      <!-- 1. LOGIN SCREEN -->
+      <div id="loginScreen" class="card-shell p-3 sm:p-4 mt-2">
+        <div class="text-center mb-3">
+          <div class="w-12 h-12 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl shadow-sm">
+            <i class="fa-solid fa-user-shield text-brand-aqua"></i>
+          </div>
+          <h4 class="fw-bold mb-1 text-slate-800 text-lg sm:text-xl">जल मित्र लॉगिन</h4>
+          <p class="text-muted small mb-0">मोबाइल नंबर या Staff ID और PIN दर्ज करें</p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-secondary mb-1">मोबाइल नंबर या STAFF ID</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa-solid fa-phone text-muted"></i></span>
+            <input type="text" id="inputId" class="form-control form-control-lg text-sm sm:text-base" placeholder="उदा: 7860393191 या BP001" autocomplete="username">
+          </div>
+        </div>
+
+        <!-- PIN Input with Show/Hide Eye Button -->
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-secondary mb-1">4-अंकों का PIN</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa-solid fa-lock text-muted"></i></span>
+            <input type="password" id="inputPin" class="form-control form-control-lg text-center tracking-widest text-base" maxlength="6" placeholder="••••" inputmode="numeric" autocomplete="current-password">
+            <button class="btn btn-outline-secondary bg-white border-start-0 text-muted" type="button" onclick="togglePinVisibility()" id="btnEye">
+              <i class="fa-solid fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me (Auto-Login) Option -->
+        <div class="d-flex align-items-center justify-content-between mb-4 px-1">
+          <div class="form-check">
+            <input class="form-check-input cursor-pointer" type="checkbox" id="rememberMeCheck" checked>
+            <label class="form-check-label small text-secondary cursor-pointer user-select-none" for="rememberMeCheck">
+              मुझे याद रखें (Auto-Login)
+            </label>
+          </div>
+          <small class="text-muted" style="font-size: 11px;">सुरक्षित 🔒</small>
+        </div>
+
+        <div id="loginErr" class="alert alert-danger py-2 small d-none text-center"></div>
+
+        <button id="loginBtn" class="btn btn-primary btn-lg w-100 fw-bold rounded-pill shadow-sm" style="background-color: #003366; border-color: #003366;" onclick="doLogin()">
+          डैशबोर्ड खोलें <i class="fa-solid fa-arrow-right ms-1"></i>
+        </button>
+      </div>
+
+      <!-- SPINNER -->
+      <div id="loadingBox" class="text-center py-5 d-none">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-2 small fw-semibold">डेटा लोड हो रहा है, कृपया प्रतीक्षा करें...</p>
+      </div>
+
+      <!-- 2. DASHBOARD VIEW (AFTER LOGIN) -->
+      <div id="dashboardScreen" class="d-none">
+
+        <!-- ================= UNIFORM PROFILE CARD ================= -->
+        <div class="card-shell p-3 mb-3">
+          <!-- Top Row: Avatar + Systematic Info -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#003366] to-[#3B82F6] text-white flex items-center justify-center font-bold text-xl shadow-sm flex-shrink-0">
+              🙏
+            </div>
+            
+            <div class="flex-grow-1 min-w-0">
+              <div class="d-flex justify-content-between align-items-center mb-0.5">
+                <span class="text-muted fw-semibold" style="font-size: 11px;">नमस्ते,</span>
+                <span class="badge-jalmitra">
+                  <i class="fa-solid fa-droplet text-amber-500"></i> जल मित्र
+                </span>
+              </div>
+
+              <h5 class="fw-bold mb-1 text-slate-800 text-truncate" style="font-size: 16px; line-height: 1.2;" id="vStaffName">Talib</h5>
+
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-slate-100 text-slate-600 border px-1.5 py-0.5 font-semibold" style="font-size: 10px;" id="vStaffId">ID: BP001</span>
+                <span class="text-muted text-truncate" style="font-size: 11px;">भारत पेयजल डैशबोर्ड 🇮🇳</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-2.5 border-slate-200 opacity-60">
+
+          <!-- Month Selector -->
+          <div class="d-flex align-items-center justify-content-between gap-2 bg-blue-50/70 p-2 rounded-xl border border-blue-100">
+            <div class="d-flex align-items-center gap-2 ps-1 flex-shrink-0">
+              <div class="w-7 h-7 rounded-lg bg-white text-brand-blue flex items-center justify-center shadow-sm border border-blue-100">
+                <i class="fa-solid fa-calendar-check text-brand-aqua text-xs"></i>
+              </div>
+              <div>
+                <span class="d-block text-muted fw-bold" style="font-size: 10px; line-height: 1.1;">वेतन माह</span>
+                <span class="fw-bold text-slate-700 d-block" style="font-size: 11px;">महीने का हिसाब</span>
+              </div>
+            </div>
+            
+            <div class="flex-grow-1" style="max-width: 175px;">
+              <select id="monthSelector" class="form-select form-select-sm month-picker-select shadow-sm w-100" onchange="onMonthChange(this.value)">
+                <!-- Dynamic options -->
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= PERFORMANCE SECTION ================= -->
+        <div class="card-shell p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2.5 gap-1">
+            <div class="d-flex align-items-center gap-2 min-w-0">
+              <span class="bg-primary text-white w-7 h-7 rounded-lg flex items-center justify-center text-xs flex-shrink-0">
+                <i class="fa-solid fa-chart-line"></i>
+              </span>
+              <div class="min-w-0">
+                <h6 class="fw-bold mb-0 text-slate-800 text-truncate" style="font-size: 13.5px;">कार्य रिपोर्ट (Performance)</h6>
+                <small class="text-muted" style="font-size: 10px;" id="vPerfMonth">Month</small>
+              </div>
+            </div>
+            <span class="badge bg-warning text-dark px-2 py-1 flex-shrink-0 text-nowrap" style="font-size: 10px;">⚠️ मासिक रिपोर्ट</span>
+          </div>
+
+          <div class="row g-2">
+            <!-- 1. Naye Grahak -->
+            <div class="col-6">
+              <div class="kpi-box kpi-green">
+                <div class="d-flex justify-content-between align-items-center text-success">
+                  <small class="fw-bold" style="font-size: 11px;"><i class="fa-solid fa-user-plus"></i> नए ग्राहक</small>
+                  <i class="fa-solid fa-circle-check text-xs"></i>
+                </div>
+                <div class="fw-bold my-1 text-slate-800" style="font-size: 16px;" id="vTotalCust">0 ग्राहक</div>
+                <small class="text-muted d-block leading-tight" style="font-size: 10px;" id="vCustBreakdown">0 रेगुलर + 0 अल्टरनेटिव</small>
+              </div>
+            </div>
+
+            <!-- 2. Chhooti Delivery -->
+            <div class="col-6">
+              <div class="kpi-box kpi-red">
+                <div class="d-flex justify-content-between align-items-center text-danger">
+                  <small class="fw-bold" style="font-size: 11px;"><i class="fa-solid fa-bell"></i> छूटी डिलीवरी</small>
+                  <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+                </div>
+                <div class="fw-bold my-1 text-slate-800" style="font-size: 16px;" id="vMissedDeliveries">0 शिकायत</div>
+                <small class="text-danger d-block leading-tight font-semibold" style="font-size: 10px;" id="vMissedCutText">₹0 कटौती हुई</small>
+              </div>
+            </div>
+
+            <!-- 3. Penalty / Nuksan -->
+            <div class="col-6">
+              <div class="kpi-box kpi-yellow">
+                <div class="d-flex justify-content-between align-items-center text-warning">
+                  <small class="fw-bold" style="font-size: 11px;"><i class="fa-solid fa-shield"></i> पेनल्टी/नुकसान</small>
+                  <i class="fa-solid fa-shield-halved text-xs"></i>
+                </div>
+                <div class="fw-bold my-1 text-slate-800" style="font-size: 16px;" id="vPenaltyAmount">₹0</div>
+                <small class="text-muted d-block leading-tight" style="font-size: 10px;">लापरवाही कटौती</small>
+              </div>
+            </div>
+
+            <!-- 4. Haziri Record -->
+            <div class="col-6">
+              <div class="kpi-box kpi-blue">
+                <div class="d-flex justify-content-between align-items-center text-primary">
+                  <small class="fw-bold" style="font-size: 11px;"><i class="fa-solid fa-calendar-check"></i> हाज़िरी रिकॉर्ड</small>
+                  <i class="fa-solid fa-calendar text-xs"></i>
+                </div>
+                <div class="fw-bold my-1 text-slate-800" style="font-size: 16px;" id="vAttendancePercent">100% हाज़िरी</div>
+                <small class="text-success fw-bold d-block leading-tight" style="font-size: 10px;" id="vAttendanceBonusText">+₹200 नकद इनाम मिला</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-light border mt-2.5 mb-0 p-2 d-flex align-items-start gap-2" style="font-size: 11px;">
+            <span class="flex-shrink-0">📢</span>
+            <div class="text-secondary leading-normal">
+              <strong>मासिक समीक्षा:</strong> कृपया समय पर स्वच्छ पानी पहुंचाएं, शिकायतें शून्य रखें और पूरा इंसेंटिव हासिल करें।
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= NET IN-HAND BANNER ================= -->
+        <div class="net-salary-card shadow-sm mb-3">
+          <span class="net-pill fw-bold">कुल बची शुद्ध सैलरी (NET PAYABLE)</span>
+          <div class="fw-bold text-amber-300 my-1 tracking-tight" style="font-size: clamp(26px, 7vw, 36px);" id="vInHand">₹0</div>
+          <small class="opacity-80 d-block mb-2" style="font-size: 11px;">इंसेंटिव जोड़कर और एडवांस व कटौतियां काटकर</small>
+
+          <!-- Paid vs Pending Dual Badges -->
+          <div class="row g-2 mt-1 px-1">
+            <div class="col-6">
+              <div class="bg-white/10 rounded-xl p-2 text-start border border-white/20">
+                <small class="opacity-75 d-block text-white" style="font-size: 10px;">🟢 भुगतान हुआ (Paid)</small>
+                <strong class="text-white fs-6" id="vPaidAmount">₹0</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="bg-white/10 rounded-xl p-2 text-start border border-white/20" id="vPendingBox">
+                <small class="opacity-75 d-block text-white" style="font-size: 10px;">🟠 बकाया रकम (Due)</small>
+                <strong class="text-amber-300 fs-6" id="vPendingAmount">₹0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-2 text-center" id="vPaymentStatusText">
+            <span class="badge bg-light text-secondary px-3 py-1 rounded-pill" style="font-size: 10px;">हिसाब सामान्य</span>
+          </div>
+        </div>
+
+        <!-- 4 Stat Badges (एडवांस + खर्चा) -->
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <div class="stat-pill d-flex justify-content-between align-items-center">
+              <div class="min-w-0 pe-1">
+                <small class="text-muted d-block text-truncate" style="font-size: 10px;">फिक्स सैलरी</small>
+                <strong class="text-slate-800 d-block text-truncate" style="font-size: 13px;" id="vStatBase">₹0</strong>
+              </div>
+              <i class="fa-solid fa-wallet text-secondary opacity-60 text-sm flex-shrink-0"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="stat-pill d-flex justify-content-between align-items-center">
+              <div class="min-w-0 pe-1">
+                <small class="text-muted d-block text-truncate" style="font-size: 10px;">कुल इंसेंटिव</small>
+                <strong class="text-success d-block text-truncate" style="font-size: 13px;" id="vStatIncentive">+₹0</strong>
+              </div>
+              <i class="fa-solid fa-gift text-success opacity-75 text-sm flex-shrink-0"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="stat-pill d-flex justify-content-between align-items-center">
+              <div class="min-w-0 pe-1">
+                <small class="text-muted d-block text-truncate" style="font-size: 10px;">कुल कटौती</small>
+                <strong class="text-danger d-block text-truncate" style="font-size: 13px;" id="vStatCut">-₹0</strong>
+              </div>
+              <i class="fa-solid fa-scissors text-danger opacity-75 text-sm flex-shrink-0"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="stat-pill d-flex justify-content-between align-items-center">
+              <div class="min-w-0 pe-1">
+                <small class="text-muted d-block text-truncate" style="font-size: 10px;">एडवांस + खर्चा</small>
+                <strong class="text-danger d-block text-truncate" style="font-size: 13px;" id="vStatAdv">-₹0</strong>
+              </div>
+              <i class="fa-solid fa-hand-holding-dollar text-warning opacity-75 text-sm flex-shrink-0"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="card-shell p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0 text-slate-800" style="font-size: 14px;">
+              <i class="fa-solid fa-file-invoice text-primary me-1"></i> विस्तृत हिसाब विवरण
+            </h6>
+            <span class="badge bg-light text-secondary border px-2 py-1" style="font-size: 10px;" id="vDetailMonth">Month</span>
+          </div>
+
+          <div class="d-flex flex-column gap-2.5" style="font-size: 12.5px;">
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div><strong>1. मूल फिक्स वेतन</strong></div>
+              <div class="fw-bold text-slate-800" id="item1">₹0</div>
+            </div>
+
+            <!-- 2. Regular tanki -->
+            <div class="py-1 border-bottom border-slate-100">
+              <div class="d-flex justify-content-between align-items-center cursor-pointer" onclick="toggleAccordion('regBox')">
+                <div class="pe-2">
+                  <strong class="text-dark">2. नई रेगुलर टंकी इंसेंटिव</strong> <i class="fa-solid fa-chevron-down text-success small ms-1"></i>
+                  <div class="text-success small" id="regCountLabel" style="font-size: 11px;">0 टंकी जुड़ीं • सूची देखें ▾</div>
+                </div>
+                <div class="fw-bold text-success flex-shrink-0 text-nowrap" id="regTotalAmount">+₹0</div>
+              </div>
+              <div id="regBox" class="sub-toggle-card custom-scroll d-none">
+                <strong class="text-success small d-block mb-1">📌 जुड़ी हुई नई रेगुलर टंकियां:</strong>
+                <div id="regListItems"></div>
+              </div>
+            </div>
+
+            <!-- 3. Alternative tanki -->
+            <div class="py-1 border-bottom border-slate-100">
+              <div class="d-flex justify-content-between align-items-center cursor-pointer" onclick="toggleAccordion('altBox')">
+                <div class="pe-2">
+                  <strong class="text-dark">3. अल्टरनेटिव टंकी इंसेंटिव</strong> <i class="fa-solid fa-chevron-down text-success small ms-1"></i>
+                  <div class="text-success small" id="altCountLabel" style="font-size: 11px;">0 टंकी जुड़ी • सूची देखें ▾</div>
+                </div>
+                <div class="fw-bold text-success flex-shrink-0 text-nowrap" id="altTotalAmount">+₹0</div>
+              </div>
+              <div id="altBox" class="sub-toggle-card custom-scroll d-none">
+                <strong class="text-success small d-block mb-1">📌 जुड़ी हुई अल्टरनेटिव टंकियां:</strong>
+                <div id="altListItems"></div>
+              </div>
+            </div>
+
+            <!-- 4. Target Bonus -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>4. 200 टंकी बुकिंग धमाका</strong>
+                <div class="text-muted small" style="font-size: 11px;">टारगेट इंसेंटिव</div>
+              </div>
+              <div class="fw-bold text-success flex-shrink-0 text-nowrap" id="item4">+₹0</div>
+            </div>
+
+            <!-- 5. Attendance Bonus -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>5. 100% हाज़िरी इनाम</strong>
+                <div class="text-muted small" id="item5Desc" style="font-size: 11px;">पात्र (0 छुट्टी बोनस)</div>
+              </div>
+              <div class="fw-bold text-success flex-shrink-0 text-nowrap" id="item5">+₹0</div>
+            </div>
+
+            <!-- 6. Leave Deduction -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>6. छुट्टी (Leave) वेतन कटौती</strong>
+                <div class="text-muted small" id="item6Desc" style="font-size: 11px;">0 दिन अनुपस्थित</div>
+              </div>
+              <div class="fw-bold text-danger flex-shrink-0 text-nowrap" id="item6">-₹0</div>
+            </div>
+
+            <!-- 7. Missed Delivery -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>7. पानी न पहुंचाने पर कटौती</strong>
+                <div class="text-muted small" id="item7Desc" style="font-size: 11px;">छूटी डिलीवरी जुर्माना</div>
+              </div>
+              <div class="fw-bold text-danger flex-shrink-0 text-nowrap" id="item7">-₹0</div>
+            </div>
+
+            <!-- 8. Penalty -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>8. लापरवाही पर हर्जाना</strong>
+                <div class="text-muted small" style="font-size: 11px;">लापरवाही / जार गुम कटौती</div>
+              </div>
+              <div class="fw-bold text-danger flex-shrink-0 text-nowrap" id="item8">-₹0</div>
+            </div>
+
+            <!-- 9. Advance -->
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom border-slate-100">
+              <div class="pe-2">
+                <strong>9. लिया गया एडवांस + खर्चा</strong>
+                <div class="text-muted small" style="font-size: 11px;">कार्यालय अग्रिम या खर्चे</div>
+              </div>
+              <div class="fw-bold text-danger flex-shrink-0 text-nowrap" id="item9">-₹0</div>
+            </div>
+
+            <hr class="my-1 border-slate-200">
+
+            <!-- Bottom Paid / Due Summary -->
+            <div class="d-flex justify-content-between align-items-center pt-1">
+              <h6 class="fw-bold mb-0 text-slate-800" style="font-size: 13.5px;">कुल शुद्ध देय (Net In-Hand)</h6>
+              <h5 class="fw-bold text-primary mb-0" style="font-size: 17px;" id="finalInHandBottom">₹0</h5>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center pt-1 text-muted" style="font-size: 12px;">
+              <span>भुगतान की गई रकम (Paid):</span>
+              <span class="fw-bold text-slate-800" id="bottomPaidText">₹0</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center pt-1" style="font-size: 12.5px;">
+              <strong class="text-amber-700">शेष बकाया (Pending Due):</strong>
+              <strong class="text-danger" id="bottomDueText">₹0</strong>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= ANNUAL INCREMENT POLICY CARD (वेतन वृद्धि नियम) ================= -->
+        <div class="card-shell p-3 mb-3 border-emerald-200 bg-gradient-to-br from-white via-white to-emerald-50/40 shadow-sm">
+          <div class="d-flex justify-content-between align-items-center mb-2.5">
+            <div class="d-flex align-items-center gap-2">
+              <span class="bg-emerald-600 text-white w-7 h-7 rounded-lg flex items-center justify-center text-xs flex-shrink-0 shadow-sm">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+              </span>
+              <div>
+                <h6 class="fw-bold mb-0 text-slate-800" style="font-size: 13.5px;">वार्षिक वेतन वृद्धि नीति (Increment)</h6>
+                <small class="text-muted" style="font-size: 10px;">Annual Appraisal & Career Growth</small>
+              </div>
+            </div>
+            <span class="badge bg-emerald-100 text-emerald-700 border border-emerald-200 px-2 py-1 flex-shrink-0" style="font-size: 10px; font-weight: 700;">
+              <i class="fa-solid fa-award me-1"></i>सैलरी इंक्रीमेंट
+            </span>
+          </div>
+
+          <p class="text-secondary mb-3 leading-relaxed" style="font-size: 11.5px;">
+            भारत पेयजल में आपकी निष्ठा, ईमानदारी और उत्कृष्ट सेवा का सम्मान करने हेतु वार्षिक वेतन वृद्धि का प्रावधान है। <strong>सैलरी इंक्रीमेंट</strong> के लिए निम्नलिखित <strong>2 अनिवार्य पात्रता शर्तें</strong> पूर्ण करना आवश्यक है:
+          </p>
+
+          <!-- 2 Conditions Box -->
+          <div class="d-flex flex-column gap-2 mb-2.5">
+            <!-- Condition 1 -->
+            <div class="bg-white border rounded-xl p-2.5 d-flex align-items-start gap-2.5 shadow-sm">
+              <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                1
+              </div>
+              <div class="flex-grow-1 min-w-0">
+                <div class="d-flex justify-content-between align-items-center mb-0.5">
+                  <strong class="text-slate-800" style="font-size: 12px;">1 वर्ष का पूर्ण सेवाकाल</strong>
+                  <span class="badge bg-slate-100 text-slate-600 border" style="font-size: 9.5px;">12 महीने अनिवार्य</span>
+                </div>
+                <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.35;">
+                  कर्मचारी का भारत पेयजल के साथ कम से कम <strong>1 वर्ष (12 माह)</strong> का निरंतर, अनुशासित एवं समर्पित कार्यकाल पूरा होना आवश्यक है।
+                </p>
+              </div>
+            </div>
+
+            <!-- Condition 2 -->
+            <div class="bg-white border rounded-xl p-2.5 d-flex align-items-start gap-2.5 shadow-sm">
+              <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                2
+              </div>
+              <div class="flex-grow-1 min-w-0">
+                <div class="d-flex justify-content-between align-items-center mb-0.5">
+                  <strong class="text-slate-800" style="font-size: 12px;">न्यूनतम 36 नए ग्राहक</strong>
+                  <span class="badge bg-blue-50 text-brand-aqua border border-blue-200" style="font-size: 9.5px;">36 ग्राहक / वर्ष</span>
+                </div>
+                <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.35;">
+                  पूरे सेवा वर्ष के दौरान न्यूनतम <strong>36 नए सक्रिय ग्राहक</strong> संस्था से जोड़ना अनिवार्य है (औसतन केवल 3 ग्राहक प्रति माह)।
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Motivational Strip -->
+          <div class="alert alert-light border border-emerald-200 rounded-xl mb-0 p-2 d-flex align-items-center gap-2" style="font-size: 11px; background-color: #f0fdf4;">
+            <span class="text-emerald-600 flex-shrink-0"><i class="fa-solid fa-circle-check"></i></span>
+            <div class="text-slate-700 leading-tight">
+              <strong>नोट:</strong> दोनों शर्तें पूर्ण होने पर वार्षिक समीक्षा (Appraisal) में आपकी सैलरी में सम्मानजनक वृद्धि (Increment) की जाएगी।
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= 3. FOOTER ================= -->
+  <footer id="contact" class="bg-white relative overflow-hidden mt-8 w-full">
+      <div class="wave-divider">
+          <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+          </svg>
+      </div>
+
+      <div class="absolute top-0 left-0 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-64 h-64 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"></div>
+
+      <div class="container mx-auto px-4 pt-16 pb-6 relative z-10">
+          <div class="flex flex-col md:flex-row items-center md:items-end gap-8">
+              
+              <!-- Left: Contact Details -->
+              <div class="w-full md:w-1/2">
+                  <div class="mb-5 text-center md:text-left">
+                      <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-blue mb-1">Contact Us</h2>
+                      <p class="text-gray-600 text-xs sm:text-sm">Proudly serving Hardoi with <span class="font-bold text-orange-500">Pure</span> <span class="font-bold text-green-600">Indian Water</span>.</p>
+                  </div>
+
+                  <div class="space-y-2.5 max-w-md mx-auto md:mx-0">
+                      <!-- Helpline Card -->
+                      <div class="glass-card p-3 rounded-2xl flex items-center justify-between border-l-4 border-l-orange-400">
+                          <div class="flex items-center gap-2.5">
+                              <div class="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue text-base flex-shrink-0">
+                                  <i class="fa-solid fa-phone"></i>
+                              </div>
+                              <div>
+                                  <p class="text-[9px] uppercase font-bold text-gray-400 tracking-wider mb-0">Helpline</p>
+                                  <p class="text-base font-bold text-gray-800 mb-0">7860393198</p>
+                              </div>
+                          </div>
+                          <a href="tel:+917860393198" class="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center hover:bg-brand-aqua transition text-decoration-none flex-shrink-0"><i class="fa-solid fa-arrow-right text-xs"></i></a>
+                      </div>
+
+                      <!-- Support Card -->
+                      <div class="glass-card p-3 rounded-2xl flex items-center justify-between border-l-4 border-l-green-500">
+                          <div class="flex items-center gap-2.5 min-w-0">
+                              <div class="w-9 h-9 rounded-full bg-green-50 flex items-center justify-center text-green-600 text-base flex-shrink-0">
+                                  <i class="fa-solid fa-envelope"></i>
+                              </div>
+                              <div class="min-w-0">
+                                  <p class="text-[9px] uppercase font-bold text-gray-400 tracking-wider mb-0">Support</p>
+                                  <p class="text-sm sm:text-base font-bold text-gray-800 mb-0 text-truncate">hi@bharatpeyjal.in.net</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Social Links -->
+                  <div class="mt-5 flex items-center justify-center md:justify-start gap-4">
+                      <div class="flex gap-2">
+                          <a href="#" class="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-brand-blue hover:text-white hover:bg-brand-blue transition text-decoration-none"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                          <a href="#" class="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-brand-blue hover:text-white hover:bg-brand-blue transition text-decoration-none"><i class="fa-brands fa-instagram text-xs"></i></a>
+                      </div>
+                      <div class="h-6 w-[1px] bg-gray-200"></div>
+                      <div class="flex items-center gap-1.5 opacity-80">
+                          <i class="fa-solid fa-qrcode text-base text-gray-600"></i>
+                          <div>
+                              <p class="text-[9px] font-bold uppercase tracking-wider mb-0 text-gray-600">Scan to Pay</p>
+                              <p class="text-[8px] text-gray-400 mb-0">(Coming Soon)</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Right: Lady Image with Chakra Wheel -->
+              <div class="w-full md:w-1/2 flex justify-center md:justify-end relative mt-2 md:mt-0">
+                  <div class="absolute bottom-4 right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 w-[240px] h-[240px] md:w-[360px] md:h-[360px] opacity-15 pointer-events-none -z-10">
+                      <div class="chakra-wheel animate-spin-slow"></div>
+                  </div>
+                  
+                  <div class="relative z-10">
+                      <img src="footer-woman-blue.png" alt="Namaste Bharat Peyjal" class="h-[250px] sm:h-[300px] md:h-[380px] object-contain object-bottom drop-shadow-lg">
+                      <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Copyright Strip -->
+      <div class="w-full bg-white border-t border-gray-100 py-3 relative z-20">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 via-white to-green-500"></div>
+          
+          <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2 text-[11px] font-medium text-gray-500 text-center md:text-left">
+              <p class="mb-0">&copy; 2026 Bharat Peyjal. All rights reserved.</p>
+              <div class="flex flex-wrap justify-center gap-3">
+                  <a href="https://bharatpeyjal.in.net/privacy.html" class="hover:text-brand-blue transition text-decoration-none text-gray-500">Privacy Policy</a>
+                  <a href="https://bharatpeyjal.in.net/terms.html" class="hover:text-brand-blue transition text-decoration-none text-gray-500">Terms & Condition</a>
+                  <a href="https://bharatpeyjal.in.net/tds.html" class="hover:text-brand-blue transition text-decoration-none text-gray-500">TDS Report</a>
+                  <a href="https://bharatpeyjal.in.net/hiring.html" class="hover:text-brand-blue transition text-decoration-none text-gray-500">Hiring</a>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+  <!-- ================= 4. CORE JAVASCRIPT ================= -->
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxTzRuoHBEUEM9GJSLFwxMwZzaroIYRANnIgJP7OCHWX_lkeP1cHv9SfK9sMF9vNz3X/exec";
+
+    var globalMonthMap = {};
+    var currentStaff = { name: "Talib", id: "BP001" };
+    var currentSelectedMonth = "";
+
+    // 1. PIN SHOW / HIDE FUNCTION
+    function togglePinVisibility() {
+      const pinField = document.getElementById('inputPin');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (pinField.type === "password") {
+        pinField.type = "text";
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        pinField.type = "password";
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    // 2. AUTO-LOGIN ON PAGE LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedId = localStorage.getItem('bp_staff_id');
+      const savedPin = localStorage.getItem('bp_staff_pin');
+      const remember = localStorage.getItem('bp_remember_me');
+
+      if (remember === 'true' && savedId && savedPin) {
+        document.getElementById('inputId').value = savedId;
+        document.getElementById('inputPin').value = savedPin;
+        document.getElementById('rememberMeCheck').checked = true;
+        doLogin(true); // Auto-login quietly
+      }
+    });
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    function doLogin(isAutoLogin = false) {
+      var idVal = document.getElementById('inputId').value.trim();
+      var pinVal = document.getElementById('inputPin').value.trim();
+      var err = document.getElementById('loginErr');
+
+      if (!idVal || !pinVal) {
+        err.textContent = "कृपया मोबाइल नंबर/ID और PIN दोनों दर्ज करें!";
+        err.classList.remove('d-none');
+        return;
+      }
+      err.classList.add('d-none');
+      document.getElementById('loadingBox').classList.remove('d-none');
+      document.getElementById('loginBtn').disabled = true;
+
+      fetch(`${API_URL}?id=${encodeURIComponent(idVal)}&pin=${encodeURIComponent(pinVal)}`)
+        .then(response => response.json())
+        .then(res => {
+          document.getElementById('loadingBox').classList.add('d-none');
+          document.getElementById('loginBtn').disabled = false;
+
+          if (!res.success) {
+            err.textContent = res.message;
+            err.classList.remove('d-none');
+            if (isAutoLogin) {
+              localStorage.removeItem('bp_staff_id');
+              localStorage.removeItem('bp_staff_pin');
+              localStorage.removeItem('bp_remember_me');
+            }
+            return;
+          }
+
+          // Save credentials if "Remember Me" is checked
+          const rememberCheck = document.getElementById('rememberMeCheck');
+          if (rememberCheck && rememberCheck.checked) {
+            localStorage.setItem('bp_staff_id', idVal);
+            localStorage.setItem('bp_staff_pin', pinVal);
+            localStorage.setItem('bp_remember_me', 'true');
+          } else {
+            localStorage.removeItem('bp_staff_id');
+            localStorage.removeItem('bp_staff_pin');
+            localStorage.removeItem('bp_remember_me');
+          }
+
+          document.getElementById('loginScreen').classList.add('d-none');
+          document.getElementById('dashboardScreen').classList.remove('d-none');
+          
+          // Responsive Navbar state
+          document.getElementById('navCallBtn').classList.add('d-none');
+          document.getElementById('navActions').classList.remove('d-none');
+          document.getElementById('navActions').classList.add('d-flex');
+          document.getElementById('mobileNavActions').classList.remove('d-none');
+
+          // Header Profile
+          currentStaff = res.staff || { name: idVal, id: idVal };
+          document.getElementById('vStaffName').textContent = currentStaff.name;
+          document.getElementById('vStaffId').textContent = "ID: " + currentStaff.id;
+
+          globalMonthMap = res.monthDataMap || {};
+
+          // Populate Month Dropdown cleanly with short suffix
+          var mSelect = document.getElementById('monthSelector');
+          mSelect.innerHTML = '';
+          (res.monthList || []).forEach(function(m, idx) {
+            var opt = document.createElement('option');
+            opt.value = m;
+            opt.textContent = m + (idx === res.monthList.length - 1 ? ' (चालू)' : '');
+            mSelect.appendChild(opt);
+          });
+
+          // Set Selected Month
+          var defaultM = res.defaultMonth;
+          mSelect.value = defaultM;
+          currentSelectedMonth = defaultM;
+          renderMonthData(defaultM);
+        })
+        .catch(error => {
+          document.getElementById('loadingBox').classList.add('d-none');
+          document.getElementById('loginBtn').disabled = false;
+          err.textContent = "सर्वर कनेक्शन में समस्या: " + error.message;
+          err.classList.remove('d-none');
+        });
+    }
+
+    function onMonthChange(selectedMonth) {
+      currentSelectedMonth = selectedMonth;
+      renderMonthData(selectedMonth);
+    }
+
+    function renderMonthData(m) {
+      var d = globalMonthMap[m];
+      if (!d) return;
+
+      document.getElementById('vPerfMonth').textContent = d.month;
+      document.getElementById('vDetailMonth').textContent = d.month;
+
+      // 1. KPI Naye Grahak
+      var totalCust = d.regList.length + d.altList.length;
+      document.getElementById('vTotalCust').textContent = totalCust + " ग्राहक";
+      document.getElementById('vCustBreakdown').textContent = d.regList.length + " रेगुलर + " + d.altList.length + " अल्टरनेटिव";
+
+      // 2. KPI Chhooti Delivery
+      var count = d.missedCount || 0;
+      document.getElementById('vMissedDeliveries').textContent = count + " शिकायत";
+      document.getElementById('vMissedCutText').textContent = "₹" + d.missedDeliveries + " कटौती हुई";
+
+      // 3. KPI Penalty
+      document.getElementById('vPenaltyAmount').textContent = "₹" + d.damagePenalty;
+
+      // 4. KPI Haziri
+      if (d.leaveDays === 0) {
+        document.getElementById('vAttendancePercent').textContent = "100% हाज़िरी";
+        document.getElementById('vAttendanceBonusText').textContent = "+₹200 नकद इनाम मिला";
+      } else {
+        document.getElementById('vAttendancePercent').textContent = d.leaveDays + " दिन छुट्टी";
+        document.getElementById('vAttendanceBonusText').textContent = "इनाम के पात्र नहीं";
+      }
+
+      // Net In-Hand Banner
+      document.getElementById('vInHand').textContent = "₹" + d.inHand.toLocaleString('en-IN');
+      document.getElementById('finalInHandBottom').textContent = "₹" + d.inHand.toLocaleString('en-IN');
+
+      // ================= PAID VS PENDING SALARY LOGIC =================
+      var paid = d.paidAmount !== undefined ? Number(d.paidAmount) : d.inHand;
+      var pending = Math.max(0, d.inHand - paid);
+
+      document.getElementById('vPaidAmount').textContent = "₹" + paid.toLocaleString('en-IN');
+      document.getElementById('vPendingAmount').textContent = "₹" + pending.toLocaleString('en-IN');
+      document.getElementById('bottomPaidText').textContent = "₹" + paid.toLocaleString('en-IN');
+      document.getElementById('bottomDueText').textContent = "₹" + pending.toLocaleString('en-IN');
+
+      var statusTextEl = document.getElementById('vPaymentStatusText');
+      if (pending === 0 && d.inHand > 0) {
+        statusTextEl.innerHTML = `<span class="badge bg-success text-white px-3 py-1 rounded-pill text-xs"><i class="fa-solid fa-circle-check me-1"></i> पूरा भुगतान हो चुका है</span>`;
+      } else if (pending > 0) {
+        statusTextEl.innerHTML = `<span class="badge bg-warning text-dark px-3 py-1 rounded-pill text-xs"><i class="fa-solid fa-clock me-1"></i> शेष ₹${pending.toLocaleString('en-IN')} बाद में देय है</span>`;
+      } else {
+        statusTextEl.innerHTML = `<span class="badge bg-light text-secondary px-3 py-1 rounded-pill text-xs">हिसाब सामान्य</span>`;
+      }
+
+      // 4 Badges (एडवांस + खर्चा)
+      document.getElementById('vStatBase').textContent = "₹" + d.baseSalary.toLocaleString('en-IN');
+      document.getElementById('vStatIncentive').textContent = "+₹" + d.totalIncentive.toLocaleString('en-IN');
+      document.getElementById('vStatCut').textContent = "-₹" + d.totalPenalties.toLocaleString('en-IN');
+      document.getElementById('vStatAdv').textContent = "-₹" + d.advanceTaken.toLocaleString('en-IN');
+
+      // Breakdown Items
+      document.getElementById('item1').textContent = "₹" + d.baseSalary.toLocaleString('en-IN');
+      
+      document.getElementById('regCountLabel').textContent = d.regList.length + " टंकी जुड़ीं • सूची देखें ▾";
+      document.getElementById('regTotalAmount').textContent = "+₹" + d.regIncentiveTotal.toLocaleString('en-IN');
+      renderList('regListItems', d.regList);
+
+      document.getElementById('altCountLabel').textContent = d.altList.length + " टंकी जुड़ी • सूची देखें ▾";
+      document.getElementById('altTotalAmount').textContent = "+₹" + d.altIncentiveTotal.toLocaleString('en-IN');
+      renderList('altListItems', d.altList);
+
+      document.getElementById('item4').textContent = "+₹" + d.bookingPercentBonus.toLocaleString('en-IN');
+      document.getElementById('item5').textContent = "+₹" + d.attendanceBonus.toLocaleString('en-IN');
+      document.getElementById('item5Desc').textContent = d.leaveDays === 0 ? "पात्र (0 छुट्टी बोनस)" : "अपात्र (" + d.leaveDays + " छुट्टी)";
+      
+      document.getElementById('item6').textContent = "-₹" + d.leaveCut.toLocaleString('en-IN');
+      document.getElementById('item6Desc').textContent = d.leaveDays + " दिन अनुपस्थित (@ ₹" + Math.round(d.baseSalary/30) + "/दिन)";
+
+      document.getElementById('item7').textContent = "-₹" + d.missedDeliveries.toLocaleString('en-IN');
+      document.getElementById('item7Desc').textContent = count > 0 ? count + " बार पानी छूटा" : "कोई कटौती नहीं";
+
+      document.getElementById('item8').textContent = "-₹" + d.damagePenalty.toLocaleString('en-IN');
+      
+      // 9. एडवांस + खर्चा
+      document.getElementById('item9').textContent = "-₹" + d.advanceTaken.toLocaleString('en-IN');
+    }
+
+    // List Rendering with text safety
+    function renderList(targetId, list) {
+      var box = document.getElementById(targetId);
+      box.innerHTML = '';
+      if (!list || list.length === 0) {
+        box.innerHTML = '<span class="text-muted small">कोई नई टंकी दर्ज नहीं है।</span>';
+        return;
+      }
+      list.forEach(function(item) {
+        var row = document.createElement('div');
+        row.className = "d-flex justify-content-between align-items-center py-1.5 border-bottom border-light gap-2";
+        row.innerHTML = `
+          <div class="text-truncate flex-grow-1" style="font-size: 11.5px;">📅 ${item.date}: <strong>${item.customer}</strong></div>
+          <span class="text-success fw-bold flex-shrink-0 text-nowrap" style="font-size: 11.5px;">+₹${item.amount}</span>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    function toggleAccordion(id) {
+      var el = document.getElementById(id);
+      el.classList.toggle('d-none');
+    }
+
+    function logout() {
+      localStorage.removeItem('bp_staff_id');
+      localStorage.removeItem('bp_staff_pin');
+      localStorage.removeItem('bp_remember_me');
+
+      document.getElementById('dashboardScreen').classList.add('d-none');
+      document.getElementById('navActions').classList.add('d-none');
+      document.getElementById('navActions').classList.remove('d-flex');
+      document.getElementById('mobileNavActions').classList.add('d-none');
+      document.getElementById('navCallBtn').classList.remove('d-none');
+      document.getElementById('loginScreen').classList.remove('d-none');
+      document.getElementById('inputPin').value = '';
+      
+      const pinField = document.getElementById('inputPin');
+      const eyeIcon = document.getElementById('eyeIcon');
+      pinField.type = "password";
+      eyeIcon.classList.remove('fa-eye-slash');
+      eyeIcon.classList.add('fa-eye');
+
+      if (!mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
